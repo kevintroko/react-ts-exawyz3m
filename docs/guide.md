@@ -48,6 +48,10 @@ function Counter() {
 
 **It increases by 1, not 3.**
 
+### Explain like I'm 5
+
+Imagine you have a jar with 0 candies. You write three notes that all say "put 1 candy in the jar, based on what's in it _right now_." But you read the jar's count (0) at the moment you wrote them, so every note says "make it 1." React reads all three notes at once, and they all agree: the jar ends with **1** candy, not 3. To actually add 3, each note has to say "add 1 to whatever is in the jar _when you open this note_."
+
 ### Fix
 
 Use the functional updater so each call receives the latest pending value:
@@ -105,6 +109,10 @@ function UserProfile() {
 
 **React does a shallow reference comparison, and the reference never changed, so it bails out of rendering.**
 
+### Explain like I'm 5
+
+React only repaints the screen if you hand it a **different box**. Here we opened the _same_ box and swapped the toy inside, then handed React the same box back. React looks at the box, says "same box as before — nothing to do," and doesn't repaint. If we'd handed it a **brand-new box** (even with the same toys plus one), React would notice and repaint.
+
 ### Fix
 
 Create a new object so the reference changes:
@@ -153,6 +161,10 @@ function UserList({ users }) {
 ### Correct answer
 
 **It triggers an unnecessary second render cycle every time `users` changes (derived state antipattern).**
+
+### Explain like I'm 5
+
+We already have a big box of toys (`users`). Instead of just _counting the red ones_ whenever someone asks, we make a second box, copy the red toys into it, and every time the big box changes we redo the copying — which makes the room get tidied up **twice**. It's simpler to just count the red toys on the spot when we need the number. No second box needed.
 
 ### Fix
 
@@ -208,6 +220,10 @@ function Timer() {
 
 **Bug 1: stale closure — `seconds` is frozen at 0, so it never counts past 1. Bug 2: missing cleanup — the interval is never cleared, causing a memory leak.**
 
+### Explain like I'm 5
+
+We told a robot: "every second, take the number **0** and add 1." We only told it once, so it keeps saying "1... 1... 1..." forever because it never learned the number changed. That's bug one. Bug two: when we leave the room, we never tell the robot to stop — so it keeps ticking in an empty room forever (and if we come back, we start _another_ robot). The fix: tell it "add 1 to **whatever the number is now**," and "stop when we leave."
+
 ### Fix
 
 Use a functional update (fixes the stale value) and return a cleanup (fixes the leak):
@@ -260,6 +276,10 @@ function SearchResults({ query }) {
 ### Correct answer
 
 **A race condition: a slower, older request can resolve after a newer one and overwrite the correct (newer) data.**
+
+### Explain like I'm 5
+
+You order pizza, then change your mind and order a burger. But the pizza shop is slow, so the pizza shows up _after_ the burger — and now you're stuck holding the thing you didn't want. The fix is to put a sticky note on each order saying "only accept me if I'm still the newest order," so the late pizza gets thrown away when it finally arrives.
 
 ### Fix
 
@@ -322,6 +342,10 @@ function Parent() {
 ### Correct answer
 
 **Yes — `Child` still re-renders. The inline object literal is a new reference each render, defeating `React.memo`.**
+
+### Explain like I'm 5
+
+`React.memo` is a lazy kid who says "I won't redo my drawing unless you give me a **different** box of crayons." But every time the parent moves, we hand the kid a **freshly wrapped** box — same crayons inside, but new wrapping. The kid sees new wrapping and redraws anyway. If we keep handing him the **exact same box** every time, he finally relaxes and skips the redraw.
 
 ### Fix
 
