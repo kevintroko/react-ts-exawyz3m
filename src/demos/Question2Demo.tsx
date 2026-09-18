@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { btnStyle, noteStyle, valStyle } from "./demoStyles.ts";
+import { btnStyle, noteStyle, valStyle } from "./demoStyles";
 
 // --- Question 2 Demos: Direct Mutation & Reference Equality ---
 export const BuggyProfile: React.FC = () => {

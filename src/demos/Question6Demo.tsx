@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { btnStyle, noteStyle } from "./demoStyles.ts";
+import { btnStyle, noteStyle } from "./demoStyles";
 
 // --- Question 6 Demos: Memoization & Reference Stability ---
 const UnmemoizedChild = React.memo(

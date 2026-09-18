@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { noteStyle, valStyle } from "./demoStyles.ts";
+import { noteStyle, valStyle } from "./demoStyles";
 
 // --- Question 4 Demos: Stale Closures & Effect Cleanup ---
 export const BuggyTimer: React.FC = () => {

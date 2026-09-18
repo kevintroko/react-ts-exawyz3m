@@ -1,9 +1,9 @@
-import { BuggyCounter, FixedCounter } from "./demos/Question1Demo.tsx";
-import { BuggyProfile, FixedProfile } from "./demos/Question2Demo.tsx";
-import { BuggyDerived, FixedDerived } from "./demos/Question3Demo.tsx";
-import { BuggyTimer, FixedTimer } from "./demos/Question4Demo.tsx";
-import { BuggyFetch, FixedFetch } from "./demos/Question5Demo.tsx";
-import { BuggyMemo, FixedMemo } from "./demos/Question6Demo.tsx";
+import { BuggyCounter, FixedCounter } from "./demos/Question1Demo";
+import { BuggyProfile, FixedProfile } from "./demos/Question2Demo";
+import { BuggyDerived, FixedDerived } from "./demos/Question3Demo";
+import { BuggyTimer, FixedTimer } from "./demos/Question4Demo";
+import { BuggyFetch, FixedFetch } from "./demos/Question5Demo";
+import { BuggyMemo, FixedMemo } from "./demos/Question6Demo";
 import { QuestionData } from "./types";
 
 export const questions: QuestionData[] = [

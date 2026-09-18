@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CodeSnippet } from "./CodeSnippet.tsx";
+import { CodeSnippet } from "./CodeSnippet";
 import { QuestionData } from "./types";
 
 interface Props {

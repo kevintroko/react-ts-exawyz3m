@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { btnStyle, noteStyle, valStyle } from "./demoStyles.ts";
+import { btnStyle, noteStyle, valStyle } from "./demoStyles";
 
 // --- Question 1 Demos: State Updates & Batching ---
 export const BuggyCounter: React.FC = () => {

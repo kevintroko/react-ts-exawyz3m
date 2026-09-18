@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { btnStyle, noteStyle, valStyle } from "./demoStyles.ts";
+import { btnStyle, noteStyle, valStyle } from "./demoStyles";
 
 // --- Question 3 Demos: Derived State ---
 export const BuggyDerived: React.FC = () => {
