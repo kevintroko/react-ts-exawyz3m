@@ -4,7 +4,7 @@
 
 **Format suggestion:** Show the candidate the code snippet, read the "Ask" prompt, and let them reason out loud. Use the "Hint questions" only if they get stuck. The "What's wrong" and "Fix" sections are your reference — don't read them unless revealing the answer.
 
-**Question set:** 6 questions, split into _Basic Core_ (1–3) and _Advanced Everyday_ (4–6).
+**Question set:** 7 questions, split into _Basic Core_ (1–3) and _Advanced Everyday_ (4–7).
 
 ---
 
@@ -367,22 +367,108 @@ function Parent() {
 
 ---
 
+## Question 7 — Stabilizing an Expensive Child Render
+
+**Category:** Advanced Everyday
+
+### Ask (read aloud)
+
+> "This search page re-renders a big, expensive list on every keystroke, even though the list data never changes. Why, and how would you stop it?"
+
+### Code the candidate sees
+
+```jsx
+const ResultsList = React.memo(({ items, onSelect }) => {
+  // Imagine this renders 1,000 rows — expensive!
+  return (
+    <ul>
+      {items.map((item) => (
+        <li key={item.id} onClick={() => onSelect(item.id)}>
+          {item.name}
+        </li>
+      ))}
+    </ul>
+  );
+});
+
+function SearchPage({ items }) {
+  const [query, setQuery] = useState("");
+
+  const handleSelect = (id) => {
+    console.log("Selected", id);
+  };
+
+  return (
+    <div>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      <ResultsList items={items} onSelect={handleSelect} />
+    </div>
+  );
+}
+```
+
+### Hint questions (if stuck)
+
+- "The list is already wrapped in `React.memo` — so why does it still re-render?"
+- "What happens to `handleSelect` each time `SearchPage` re-renders?"
+- "Is the `onSelect` prop the same reference on every keystroke?"
+
+### What's wrong (your reference)
+
+- Typing updates `query` → `SearchPage` re-renders → `handleSelect` is **recreated as a new function** every render.
+- `ResultsList` is memoized, but it receives a **new `onSelect` reference** each time, so its shallow prop check fails and the whole 1,000-row list re-renders on every keystroke.
+- `React.memo` alone isn't enough — a function prop defeats it, exactly like the object prop in Question 6.
+
+### Correct answer
+
+**Wrap `handleSelect` in `useCallback` so its reference stays stable. Then `React.memo` sees unchanged props and skips re-rendering the list.**
+
+### Explain like I'm 5
+
+The list is a lazy artist who only redraws if you hand him a **different** paintbrush. Every time you type a letter, you accidentally hand him a brand-new (but identical) paintbrush, so he redraws all 1,000 rows for nothing. `useCallback` means "keep giving him the **same** paintbrush every time" — so he relaxes and stops redrawing.
+
+### Fix
+
+Give the callback a stable identity with `useCallback` (and it needs the memoized child to matter):
+
+```jsx
+function SearchPage({ items }) {
+  const [query, setQuery] = useState("");
+
+  const handleSelect = useCallback((id) => {
+    console.log("Selected", id);
+  }, []); // no deps → same reference forever
+
+  return (
+    <div>
+      <input value={query} onChange={(e) => setQuery(e.target.value)} />
+      <ResultsList items={items} onSelect={handleSelect} />
+    </div>
+  );
+}
+```
+
+> **Follow-up to probe depth:** "Would `useCallback` help if `ResultsList` were _not_ wrapped in `React.memo`?" → No. Without `React.memo` the child re-renders regardless, so `useCallback` buys nothing. The pairing — **`useCallback` on the parent + `React.memo` on the child** — is what makes it work.
+
+---
+
 ## Quick reference table
 
-| #   | Topic                   | One-line answer                                                            |
-| --- | ----------------------- | -------------------------------------------------------------------------- |
-| 1   | State batching          | Increases by 1 — `count` is a stale snapshot; use `prev => prev + 1`.      |
-| 2   | Object mutation         | No re-render — same reference; spread into a new object.                   |
-| 3   | Derived state           | Extra render cycle — compute during render, don't store in state.          |
-| 4   | Stale closure + cleanup | Frozen at 1 + interval leak — functional update + `clearInterval`.         |
-| 5   | Fetch race condition    | Old response overwrites new — use an `isCurrent` flag / `AbortController`. |
-| 6   | Reference equality      | Child re-renders — inline object is a new reference; hoist or `useMemo`.   |
+| #   | Topic                   | One-line answer                                                                 |
+| --- | ----------------------- | ------------------------------------------------------------------------------- |
+| 1   | State batching          | Increases by 1 — `count` is a stale snapshot; use `prev => prev + 1`.           |
+| 2   | Object mutation         | No re-render — same reference; spread into a new object.                        |
+| 3   | Derived state           | Extra render cycle — compute during render, don't store in state.               |
+| 4   | Stale closure + cleanup | Frozen at 1 + interval leak — functional update + `clearInterval`.              |
+| 5   | Fetch race condition    | Old response overwrites new — use an `isCurrent` flag / `AbortController`.      |
+| 6   | Reference equality      | Child re-renders — inline object is a new reference; hoist or `useMemo`.        |
+| 7   | Stable callback         | Memoized list re-renders — wrap the callback in `useCallback` (+ `React.memo`). |
 
 ### Recurring theme to listen for
 
 Most of these boil down to **two core React ideas**:
 
 1. **State is a snapshot** per render (Q1, Q4).
-2. **React compares by reference, not by value** (Q2, Q3, Q6) — and side effects need to account for timing/cleanup (Q4, Q5).
+2. **React compares by reference, not by value** (Q2, Q3, Q6, Q7) — and side effects need to account for timing/cleanup (Q4, Q5).
 
 A strong candidate will connect several answers back to these principles.

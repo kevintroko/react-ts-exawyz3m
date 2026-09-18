@@ -4,6 +4,7 @@ import { BuggyDerived, FixedDerived } from "./demos/Question3Demo";
 import { BuggyTimer, FixedTimer } from "./demos/Question4Demo";
 import { BuggyFetch, FixedFetch } from "./demos/Question5Demo";
 import { BuggyMemo, FixedMemo } from "./demos/Question6Demo";
+import { BuggySearch, FixedSearch } from "./demos/Question7Demo";
 import { QuestionData } from "./types";
 
 export const questions: QuestionData[] = [
@@ -182,5 +183,59 @@ function Parent() {
 }`,
     BuggyDemo: BuggyMemo,
     FixedDemo: FixedMemo,
+  },
+  {
+    id: 7,
+    title: "Stabilizing an Expensive Child Render",
+    category: "Advanced Everyday",
+    question:
+      "This search page re-renders a big, expensive list on every keystroke, even though the list data never changes. Why, and how would you stop it?",
+    codeSnippet: `const ResultsList = React.memo(({ items, onSelect }) => {
+  // Imagine this renders 1,000 rows — expensive!
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id} onClick={() => onSelect(item.id)}>
+          {item.name}
+        </li>
+      ))}
+    </ul>
+  );
+});
+
+function SearchPage({ items }) {
+  const [query, setQuery] = useState('');
+
+  const handleSelect = (id) => {
+    console.log('Selected', id);
+  };
+
+  return (
+    <div>
+      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <ResultsList items={items} onSelect={handleSelect} />
+    </div>
+  );
+}`,
+    answer:
+      "Wrap handleSelect in useCallback so its reference stays stable; then React.memo sees unchanged props and skips re-rendering the list.",
+    explanation:
+      "Typing updates 'query', so SearchPage re-renders and recreates 'handleSelect' as a new function each time. The memoized list receives a new onSelect reference, its shallow prop check fails, and all rows re-render. React.memo only helps when paired with a stable callback.",
+    fixedCode: `function SearchPage({ items }) {
+  const [query, setQuery] = useState('');
+
+  const handleSelect = useCallback((id) => {
+    console.log('Selected', id);
+  }, []); // stable reference
+
+  return (
+    <div>
+      <input value={query} onChange={e => setQuery(e.target.value)} />
+      <ResultsList items={items} onSelect={handleSelect} />
+    </div>
+  );
+}`,
+    BuggyDemo: BuggySearch,
+    FixedDemo: FixedSearch,
   },
 ];
