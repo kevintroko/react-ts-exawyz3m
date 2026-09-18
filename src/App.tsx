@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { questions } from './questionsData';
-import { QuestionCard } from './QuestionCard';
+import { questions } from './questionsData.ts';
+import { QuestionCard } from './QuestionCard.tsx';
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);

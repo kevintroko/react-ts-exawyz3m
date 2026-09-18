@@ -12,7 +12,7 @@ import {
   FixedFetch,
   BuggyMemo,
   FixedMemo,
-} from './QuestionDemos';
+} from './QuestionDemos.tsx';
 
 export const questions: QuestionData[] = [
   {
