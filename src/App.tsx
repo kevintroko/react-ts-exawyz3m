@@ -10,7 +10,7 @@ export default function App() {
     <div style={styles.container}>
       <header style={styles.header}>
         <h1 style={styles.title}>React Interview Questions</h1>
-        <p style={styles.subtitle}>Test code snippets live</p>
+        <p style={styles.subtitle}>Test code snippets live by Kevin Cabrera</p>
 
         <div style={styles.stepBar}>
           {questions.map((q, idx) => (
