@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { questions } from './questionsData.ts';
-import { QuestionCard } from './QuestionCard.tsx';
+import React, { useState } from "react";
+import { QuestionCard } from "./QuestionCard.tsx";
+import { questions } from "./questionsData.ts";
 
 export default function App() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -9,10 +9,8 @@ export default function App() {
   return (
     <div style={styles.container}>
       <header style={styles.header}>
-        <h1 style={styles.title}>React Tech Interview Suite</h1>
-        <p style={styles.subtitle}>
-          Test code snippets live and toggle between buggy vs fixed execution.
-        </p>
+        <h1 style={styles.title}>React Interview Questions</h1>
+        <p style={styles.subtitle}>Test code snippets live</p>
 
         <div style={styles.stepBar}>
           {questions.map((q, idx) => (
@@ -71,79 +69,79 @@ export default function App() {
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    maxWidth: '780px',
-    margin: '0 auto',
-    padding: '24px 16px',
-    fontFamily: 'system-ui, -apple-system, sans-serif',
-    color: '#f8fafc',
-    minHeight: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    boxSizing: 'border-box',
+    maxWidth: "780px",
+    margin: "0 auto",
+    padding: "24px 16px",
+    fontFamily: "system-ui, -apple-system, sans-serif",
+    color: "#f8fafc",
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    boxSizing: "border-box",
   },
   header: {
-    textAlign: 'center',
-    marginBottom: '20px',
+    textAlign: "center",
+    marginBottom: "20px",
   },
   title: {
-    fontSize: '26px',
-    fontWeight: '800',
-    color: '#ffffff',
-    margin: '0 0 6px 0',
+    fontSize: "26px",
+    fontWeight: "800",
+    color: "#ffffff",
+    margin: "0 0 6px 0",
   },
   subtitle: {
-    color: '#94a3b8',
-    fontSize: '14px',
-    margin: '0 0 16px 0',
+    color: "#94a3b8",
+    fontSize: "14px",
+    margin: "0 0 16px 0",
   },
   stepBar: {
-    display: 'flex',
-    justifyContent: 'center',
-    gap: '6px',
+    display: "flex",
+    justifyContent: "center",
+    gap: "6px",
   },
   stepBtn: {
-    backgroundColor: '#1e293b',
-    border: '1px solid #334155',
-    color: '#94a3b8',
-    padding: '6px 12px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontSize: '13px',
-    fontWeight: '600',
+    backgroundColor: "#1e293b",
+    border: "1px solid #334155",
+    color: "#94a3b8",
+    padding: "6px 12px",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontSize: "13px",
+    fontWeight: "600",
   },
   activeStepBtn: {
-    backgroundColor: '#0284c7',
-    borderColor: '#38bdf8',
-    color: '#ffffff',
+    backgroundColor: "#0284c7",
+    borderColor: "#38bdf8",
+    color: "#ffffff",
   },
   main: {
     flexGrow: 1,
   },
   footer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: '16px',
-    paddingTop: '16px',
-    borderTop: '1px solid #334155',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: "16px",
+    paddingTop: "16px",
+    borderTop: "1px solid #334155",
   },
   navBtn: {
-    backgroundColor: '#334155',
-    color: '#ffffff',
-    border: 'none',
-    padding: '8px 16px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontWeight: '600',
-    fontSize: '14px',
+    backgroundColor: "#334155",
+    color: "#ffffff",
+    border: "none",
+    padding: "8px 16px",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "600",
+    fontSize: "14px",
   },
   disabledBtn: {
     opacity: 0.4,
-    cursor: 'not-allowed',
+    cursor: "not-allowed",
   },
   counter: {
-    color: '#94a3b8',
-    fontSize: '13px',
+    color: "#94a3b8",
+    fontSize: "13px",
   },
 };

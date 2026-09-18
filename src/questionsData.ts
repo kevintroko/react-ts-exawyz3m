@@ -1,24 +1,16 @@
-import { QuestionData } from './types';
-import {
-  BuggyCounter,
-  FixedCounter,
-  BuggyProfile,
-  FixedProfile,
-  BuggyDerived,
-  FixedDerived,
-  BuggyTimer,
-  FixedTimer,
-  BuggyFetch,
-  FixedFetch,
-  BuggyMemo,
-  FixedMemo,
-} from './QuestionDemos.tsx';
+import { BuggyCounter, FixedCounter } from "./demos/Question1Demo.tsx";
+import { BuggyProfile, FixedProfile } from "./demos/Question2Demo.tsx";
+import { BuggyDerived, FixedDerived } from "./demos/Question3Demo.tsx";
+import { BuggyTimer, FixedTimer } from "./demos/Question4Demo.tsx";
+import { BuggyFetch, FixedFetch } from "./demos/Question5Demo.tsx";
+import { BuggyMemo, FixedMemo } from "./demos/Question6Demo.tsx";
+import { QuestionData } from "./types";
 
 export const questions: QuestionData[] = [
   {
     id: 1,
-    title: 'State Updates & Batching',
-    category: 'Basic Core',
+    title: "State Updates & Batching",
+    category: "Basic Core",
     question:
       "What happens to 'count' when the button is clicked once in the snippet below? Does it increase by 1 or by 3?",
     codeSnippet: `function Counter() {
@@ -32,7 +24,7 @@ export const questions: QuestionData[] = [
 
   return <button onClick={handleClick}>Count: {count}</button>;
 }`,
-    answer: 'The count increases by 1, not 3.',
+    answer: "The count increases by 1, not 3.",
     explanation:
       "State updates inside event handlers are batched, and 'count' refers to the snapshot value during that specific render. All three calls evaluate to setCount(0 + 1).",
     fixedCode: `const handleClick = () => {
@@ -45,8 +37,8 @@ export const questions: QuestionData[] = [
   },
   {
     id: 2,
-    title: 'Object Mutation in State',
-    category: 'Basic Core',
+    title: "Object Mutation in State",
+    category: "Basic Core",
     question: "Why doesn't the component re-render when the button is clicked?",
     codeSnippet: `function UserProfile() {
   const [user, setUser] = useState({ name: 'Alex', age: 25 });
@@ -59,7 +51,7 @@ export const questions: QuestionData[] = [
   return <button onClick={updateAge}>{user.name} is {user.age}</button>;
 }`,
     answer:
-      'React performs shallow comparison (Object.is) to check if state changed.',
+      "React performs shallow comparison (Object.is) to check if state changed.",
     explanation:
       "Mutating 'user.age' directly modifies the existing object in memory. 'setUser(user)' passes the exact same object reference, so React skips re-rendering.",
     fixedCode: `const updateAge = () => {
@@ -70,9 +62,9 @@ export const questions: QuestionData[] = [
   },
   {
     id: 3,
-    title: 'Derived State Antipattern',
-    category: 'Basic Core',
-    question: 'What is inefficient about this implementation?',
+    title: "Derived State Antipattern",
+    category: "Basic Core",
+    question: "What is inefficient about this implementation?",
     codeSnippet: `function UserList({ users }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -85,7 +77,7 @@ export const questions: QuestionData[] = [
     answer:
       "It triggers an unnecessary second render cycle whenever 'users' changes.",
     explanation:
-      'Passing props into state via useEffect causes a render with old state, followed immediately by a second render when setFilteredUsers runs.',
+      "Passing props into state via useEffect causes a render with old state, followed immediately by a second render when setFilteredUsers runs.",
     fixedCode: `// Derive directly during render!
 function UserList({ users }) {
   const filteredUsers = users.filter(u => u.isActive);
@@ -96,9 +88,9 @@ function UserList({ users }) {
   },
   {
     id: 4,
-    title: 'Stale Closures & Interval Cleanup',
-    category: 'Advanced Everyday',
-    question: 'What are two distinct bugs in this code snippet?',
+    title: "Stale Closures & Interval Cleanup",
+    category: "Advanced Everyday",
+    question: "What are two distinct bugs in this code snippet?",
     codeSnippet: `function Timer() {
   const [seconds, setSeconds] = useState(0);
 
@@ -111,7 +103,7 @@ function UserList({ users }) {
   return <div>Seconds: {seconds}</div>;
 }`,
     answer:
-      '1. Stale Closure bug (seconds stays at 1).\n2. Memory Leak (interval is never cleared).',
+      "1. Stale Closure bug (seconds stays at 1).\n2. Memory Leak (interval is never cleared).",
     explanation:
       "The effect callback captures initial 'seconds' (0). Every second it sets (0 + 1). Also, missing a cleanup function leaves intervals running on unmount.",
     fixedCode: `useEffect(() => {
@@ -126,9 +118,9 @@ function UserList({ users }) {
   },
   {
     id: 5,
-    title: 'Data Fetching Race Conditions',
-    category: 'Advanced Everyday',
-    question: 'What happens if responses arrive out of order?',
+    title: "Data Fetching Race Conditions",
+    category: "Advanced Everyday",
+    question: "What happens if responses arrive out of order?",
     codeSnippet: `function SearchResults({ query }) {
   const [data, setData] = useState(null);
 
@@ -139,9 +131,9 @@ function UserList({ users }) {
   return <div>{data ? data.title : 'Loading...'}</div>;
 }`,
     answer:
-      'A race condition occurs where slower older requests overwrite newer ones.',
+      "A race condition occurs where slower older requests overwrite newer ones.",
     explanation:
-      'If request A (older query) finishes after request B (newer query), the component will render stale data for request A.',
+      "If request A (older query) finishes after request B (newer query), the component will render stale data for request A.",
     fixedCode: `useEffect(() => {
   let isCurrent = true;
 
@@ -156,10 +148,10 @@ function UserList({ users }) {
   },
   {
     id: 6,
-    title: 'Object Reference Re-renders',
-    category: 'Advanced Everyday',
+    title: "Object Reference Re-renders",
+    category: "Advanced Everyday",
     question:
-      'Does <Child/> re-render when Parent counter button is clicked? Why?',
+      "Does <Child/> re-render when Parent counter button is clicked? Why?",
     codeSnippet: `const Child = React.memo(({ config }) => {
   return <div>{config.theme}</div>;
 });
@@ -174,7 +166,7 @@ function Parent() {
     </div>
   );
 }`,
-    answer: 'Yes, Child re-renders despite React.memo.',
+    answer: "Yes, Child re-renders despite React.memo.",
     explanation:
       "Inline object config={{ theme: 'dark' }} creates a new object instance in memory on every Parent render. React.memo detects a new prop reference and forces a re-render.",
     fixedCode: `const CONFIG = { theme: 'dark' };
